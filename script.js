@@ -1,6 +1,4 @@
-console.log('This  is the console ')
-
-// read the notes and display it on cards
+// read the notes and display it on cards if present
 showNotes();
 
 let addNote = document.getElementById('addNote');
@@ -54,17 +52,42 @@ function showNotes(e) {
 }
 
 
-//daleting the note
+//deleting the note
 function deleteNote(index) {
-    console.log("deleting the node", index);
+    // console.log("deleting the node", index);
     let notes = localStorage.getItem("notes");
+
     if (notes == null)
         notesObj = [];
 
     else
         notesObj = JSON.parse(notes);
 
-    notesObj.splice(index, 1);
-    localStorage.setItem("notes", JSON.stringify(notesObj));
+    
+    notesObj.splice(index, 1);          // this is deleting the one value from the given index
+    localStorage.setItem("notes", JSON.stringify(notesObj)); // updating the local storage and showing it again
     showNotes();
 }
+
+
+//implementing the searching functionality 
+let search = document.getElementById('searchText')
+search.addEventListener('input', function (e) {
+
+    //taking a value for searching 
+    let inputVal = search.value;
+
+    // console.log('This is search text',inputVal);
+    let noteCard = document.getElementsByClassName('noteCard')
+
+    Array.from(noteCard).forEach(function (element) {
+        let cardTxt = element.getElementsByTagName('p')[0].innerText; // getting the paragraph of card
+
+        //if the current text matches the inputValue then display only the matching cards 
+        if (cardTxt.includes(inputVal))
+            element.style.display = 'block';
+
+        else
+            element.style.display = 'none';
+    })
+})
